@@ -1,27 +1,28 @@
 # Core Framework
-python==3.13.0
 fastapi==0.135.1
 uvicorn==0.42.0
 pydantic==2.12.5
 pydantic-settings==2.12.0
 
+# Database
+motor==3.5.0
+beanie==1.26.0
+
 # AI & Language Models
 langchain==1.2.8
-langgraph==1.0.7
+langchain-core==0.3.19
+langchain-groq==1.0.0
 
-# Database
-pymongo==4.6.0 # Change as and When Used in development
-motor==3.3.2 # Change as and When Used in development
+# Authentication & Security
+python-jose==3.3.0
+passlib==1.7.4
+bcrypt==4.1.3
 
 # Utilities
 python-dotenv==1.2.1
-python-multipart==0.0.22
-aiohttp==3.13.3
-requests==2.32.5
 
 # Validation & Serialization
-python-json-logger==2.0.7 # Change as and When Used in development
-pydantic-extra-types==2.3.0 # Change as and When Used in development
+email-validator==2.1.1
 
 # Testing
 pytest==9.0.3
@@ -29,7 +30,7 @@ pytest-asyncio==1.3.0
 httpx==0.28.1
 
 # Development
-black==23.12.0 # Change as and When Used in development
-flake8==6.1.0 # Change as and When Used in development
-isort==5.13.2 # Change as and When Used in development
-mypy==1.7.0 # Change as and When Used in development
+black==23.12.0
+flake8==6.1.0
+isort==5.13.2
+mypy==1.7.0

@@ -5,10 +5,13 @@ FastAPI & LangGraph
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZIPMiddleware
+from contextlib import asynccontextmanager
+
 import logging
 
 from config.settings import settings
-from app.routes import projects_router, stage_1_router
+from app.routes import projects_router, stage_1_router, users_router
+from app.database import connect_db, close_db
 
 # Configure logging
 logging.basicConfig(
@@ -17,11 +20,19 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+#Lifespan context manager
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await connect_db()
+    yield
+    await close_db()
+
 # Create FastAPI app
 app = FastAPI(
     title="MVPForge API",
     description="AI-powered MVP generation platform with 7-stage engineering workflow",
-    version="0.1.0"
+    version="0.1.0",
+    lifespan=lifespan
 )
 
 # Add CORS middleware
@@ -37,6 +48,7 @@ app.add_middleware(
 app.add_middleware(GZIPMiddleware, minimum_size=1000)
 
 # Include API routes (Controllers)
+app.include_router(users_router, prefix="/api")
 app.include_router(projects_router, prefix="/api")
 app.include_router(stage_1_router, prefix="/api")
 

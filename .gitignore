@@ -16,12 +16,16 @@ frontend/.DS_Store
 
 # Backend (Python/FastAPI)
 backend/__pycache__/
+backend/**/__pycache__/
 backend/*.py[cod]
+backend/*.pyo
 backend/*$py.class
 backend/venv/
 backend/env/
+backend/backend_env/
 backend/.venv/
 backend/.env
+backend/config/.env
 backend/.env.local
 backend/.env.*.local
 backend/dist/
@@ -33,6 +37,9 @@ backend/htmlcov/
 backend/.mypy_cache/
 backend/.dmypy.json
 backend/dmypy.json
+backend/*.log
+backend/logs/
+backend/.DS_Store
 
 # IDE
 .vscode/

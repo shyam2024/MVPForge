@@ -27,8 +27,13 @@ class Settings(BaseSettings):
     ]
     
     # Database - MongoDB
-    MONGODB_URL: str = os.getenv("MONGODB_URL", "mongodb+srv://user:password@cluster.mongodb.net/mvpforge")
-    MONGODB_DB_NAME: str = os.getenv("MONGODB_DB_NAME", "mvpforge")
+    MONGODB_URL: str = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
+    DB_NAME: str = os.getenv("DB_NAME", "mvpforge")
+    
+    # JWT & Authentication
+    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "your-secret-key-change-in-production")
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRATION_HOURS: int = 24
     
     # OpenAI / LLM Configuration
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
