@@ -4,7 +4,7 @@ FastAPI & LangGraph
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.middleware.gzip import GZIPMiddleware
+# from starlette.middleware.gzip import GZIPMiddleware
 from contextlib import asynccontextmanager
 
 import logging
@@ -45,7 +45,7 @@ app.add_middleware(
 )
 
 # Add Gzip compression middleware
-app.add_middleware(GZIPMiddleware, minimum_size=1000)
+# app.add_middleware(GZIPMiddleware, minimum_size=1000)
 
 # Include API routes (Controllers)
 app.include_router(users_router, prefix="/api")

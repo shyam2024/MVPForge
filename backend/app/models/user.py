@@ -4,8 +4,8 @@ from typing import Optional
 from datetime import datetime
 
 class User(Document):
-    email = Indexed(EmailStr, unique=True)
-    username = Indexed(str, unique=True)
+    email: Indexed(EmailStr, unique=True)
+    username: Indexed(str, unique=True)
     full_name: str
     hashed_password: str
     is_active: bool = True

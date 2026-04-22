@@ -32,7 +32,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await registerUser(data)
+      await registerUser(data.full_name, data.username, data.email, data.password)
       toast.success('Account created! Welcome aboard.')
       router.push('/dashboard')
     } catch (err) {
