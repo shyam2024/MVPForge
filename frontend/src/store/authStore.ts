@@ -19,7 +19,7 @@ interface AuthStore {
   user: User | null
   isLoading: boolean
   error: string | null
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string | undefined, username: string | undefined, password: string) => Promise<void>
   register: (fullName: string, username: string, email: string, password: string) => Promise<void>
   logout: () => void
   clearError: () => void
@@ -35,10 +35,14 @@ export const useAuthStore = create<AuthStore>()(persist(
     isLoading: false,
     error: null,
 
-    login: async (email: string, password: string) => {
+    login: async (email: string | undefined, username: string | undefined, password: string) => {
       set({ isLoading: true, error: null })
       try {
-        const response = await axios.post(`${API_URL}/users/login`, { email, password })
+        const response = await axios.post(`${API_URL}/auth/login`, { 
+          email: email || null,
+          username: username || null,
+          password 
+        })
         const { access_token } = response.data
 
         set({ token: access_token, isLoading: false })
@@ -55,7 +59,7 @@ export const useAuthStore = create<AuthStore>()(persist(
     register: async (fullName: string, username: string, email: string, password: string) => {
       set({ isLoading: true, error: null })
       try {
-        const response = await axios.post(`${API_URL}/users/register`, {
+        const response = await axios.post(`${API_URL}/auth/register`, {
           full_name: fullName,
           username,
           email,

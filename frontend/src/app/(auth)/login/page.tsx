@@ -13,9 +13,11 @@ import { getErrorMessage } from '@/lib/utils'
 import { useRedirectIfAuth } from '@/hooks/useAuth'
 
 const schema = z.object({
-  email: z.string().email('Invalid email'),
+  email: z.string().email('Invalid email').optional().or(z.literal('')),
+  username: z.string().min(3, 'Username at least 3 characters').optional().or(z.literal('')),
   password: z.string().min(1, 'Password is required'),
 })
+
 type FormData = z.infer<typeof schema>
 
 export default function LoginPage() {
@@ -29,8 +31,12 @@ export default function LoginPage() {
   })
 
   const onSubmit = async (data: FormData) => {
+    if (!data.email && !data.username) {
+      toast.error('Enter either email or username')
+      return
+    }
     try {
-      await login(data.email, data.password)
+      await login(data.email || undefined, data.username || undefined, data.password)
       toast.success('Welcome back!')
       router.push('/dashboard')
     } catch (err) {
@@ -64,14 +70,23 @@ export default function LoginPage() {
         <div className="card-glass rounded-2xl p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
-              <input
-                {...register('email')}
-                type="email"
-                placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-forge-500 focus:ring-2 focus:ring-forge-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
-              />
-              {errors.email && <p className="text-red-400 text-xs mt-1.5">{errors.email.message}</p>}
+              <label className="block text-sm font-medium mb-2">Email or Username</label>
+              <div className="space-y-3">
+                <input
+                  {...register('email')}
+                  type="email"
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-forge-500 focus:ring-2 focus:ring-forge-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                />
+                <div className="text-center text-xs text-muted-foreground">or</div>
+                <input
+                  {...register('username')}
+                  type="text"
+                  placeholder="your_username"
+                  className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-forge-500 focus:ring-2 focus:ring-forge-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                />
+              </div>
+              {(errors.email || errors.username) && <p className="text-red-400 text-xs mt-1.5">{errors.email?.message || errors.username?.message}</p>}
             </div>
 
             <div>

@@ -1,42 +1,10 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from datetime import datetime
 
-from app.models.user import User, UserCreate, UserUpdate, UserLogin, UserOut
-from app.utils.security import hash_password, verify_password, create_access_token
+from app.models.user import User, UserUpdate, UserOut
+from app.middleware.auth import get_current_user
 
 router = APIRouter(prefix="/users", tags=["Users"])
-
-
-@router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
-async def register(payload: UserCreate):
-    if await User.find_one(User.email == payload.email):
-        raise HTTPException(status_code=400, detail="Email already registered")
-
-    if await User.find_one(User.username == payload.username):
-        raise HTTPException(status_code=400, detail="Username already taken")
-
-    user = User(
-        email=payload.email,
-        username=payload.username,
-        full_name=payload.full_name,
-        hashed_password=hash_password(payload.password),
-    )
-    await user.insert()
-    return _to_out(user)
-
-
-@router.post("/login")
-async def login(payload: UserLogin):
-    user = await User.find_one(User.email == payload.email)
-
-    if not user or not verify_password(payload.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
-
-    if not user.is_active:
-        raise HTTPException(status_code=403, detail="Account is deactivated")
-
-    token = create_access_token({"sub": str(user.id)})
-    return {"access_token": token, "token_type": "bearer"}
 
 @router.get("/{user_id}", response_model=UserOut)
 async def get_user(user_id: str):
@@ -46,7 +14,11 @@ async def get_user(user_id: str):
     return _to_out(user)
 
 @router.patch("/{user_id}", response_model=UserOut)
-async def update_user(user_id: str, payload: UserUpdate):
+async def update_user(user_id: str, payload: UserUpdate, current_user: User = Depends(get_current_user)):
+    # Only allow users to update their own profile
+    if str(current_user.id) != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized to update this user")
+    
     user = await User.get(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -60,7 +32,11 @@ async def update_user(user_id: str, payload: UserUpdate):
     return _to_out(user)
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user(user_id: str):
+async def delete_user(user_id: str, current_user: User = Depends(get_current_user)):
+    # Only allow users to delete their own profile
+    if str(current_user.id) != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this user")
+    
     user = await User.get(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

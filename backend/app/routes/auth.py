@@ -32,6 +32,7 @@ async def register(data: UserRegister):
             username=user.username,
             full_name=user.full_name,
             is_active=user.is_active,
+            is_verified=user.is_verified,
             avatar_url=user.avatar_url,
             bio=user.bio,
             created_at=user.created_at,
@@ -41,9 +42,14 @@ async def register(data: UserRegister):
 
 @router.post("/login", response_model=TokenResponse)
 async def login(data: UserLogin):
-    user = await User.find_one(User.email == data.email)
+    # Find user by email or username
+    if data.email:
+        user = await User.find_one(User.email == data.email)
+    else:
+        user = await User.find_one(User.username == data.username)
+    
     if not user or not verify_password(data.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token({"sub": str(user.id)})
     return TokenResponse(
@@ -54,6 +60,7 @@ async def login(data: UserLogin):
             username=user.username,
             full_name=user.full_name,
             is_active=user.is_active,
+            is_verified=user.is_verified,
             avatar_url=user.avatar_url,
             bio=user.bio,
             created_at=user.created_at,
@@ -69,6 +76,7 @@ async def get_me(current_user: User = Depends(get_current_user)):
         username=current_user.username,
         full_name=current_user.full_name,
         is_active=current_user.is_active,
+        is_verified=current_user.is_verified,
         avatar_url=current_user.avatar_url,
         bio=current_user.bio,
         created_at=current_user.created_at,
@@ -92,6 +100,7 @@ async def update_me(data: UserUpdate, current_user: User = Depends(get_current_u
         username=current_user.username,
         full_name=current_user.full_name,
         is_active=current_user.is_active,
+        is_verified=current_user.is_verified,
         avatar_url=current_user.avatar_url,
         bio=current_user.bio,
         created_at=current_user.created_at,
