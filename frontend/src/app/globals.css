@@ -52,12 +52,19 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Syne', system-ui, sans-serif;
     font-weight: 700;
   }
 
-  code, pre, .font-mono {
+  code,
+  pre,
+  .font-mono {
     font-family: 'DM Mono', monospace;
   }
 }
@@ -119,6 +126,7 @@
 .code-block::-webkit-scrollbar {
   height: 4px;
 }
+
 .code-block::-webkit-scrollbar-thumb {
   background: hsl(var(--border));
   border-radius: 2px;

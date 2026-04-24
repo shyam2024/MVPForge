@@ -88,7 +88,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-center h-64">
             <Loader2 className="w-8 h-8 animate-spin text-forge-400" />
           </div>
-        ) : projects.length === 0 ? (
+        ) : !Array.isArray(projects) || projects.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -162,7 +162,7 @@ export default function DashboardPage() {
                           className={cn(
                             'flex-1 h-1 rounded-full transition-all duration-300',
                             i + 1 < project.current_stage ? 'bg-green-500' :
-                            i + 1 === project.current_stage ? 'bg-forge-500' : 'bg-border'
+                              i + 1 === project.current_stage ? 'bg-forge-500' : 'bg-border'
                           )}
                         />
                       ))}

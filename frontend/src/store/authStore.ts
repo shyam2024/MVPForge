@@ -24,6 +24,7 @@ interface AuthStore {
   logout: () => void
   clearError: () => void
   fetchCurrentUser: () => Promise<void>
+  updateProfile: (data: { full_name?: string; bio?: string; avatar_url?: string }) => Promise<void>
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
@@ -112,6 +113,8 @@ export const useAuthStore = create<AuthStore>()(persist(
         set({ user })
       } catch (error) {
         console.error('Failed to fetch current user:', error)
+        // Don't set error state to avoid breaking the UI
+        // User will be null but app can still function
       }
     },
 
@@ -121,6 +124,39 @@ export const useAuthStore = create<AuthStore>()(persist(
 
     clearError: () => {
       set({ error: null })
+    },
+
+    updateProfile: async (data: { full_name?: string; bio?: string; avatar_url?: string }) => {
+      set({ isLoading: true, error: null })
+      try {
+        const { token } = get()
+        if (!token) {
+          throw new Error('Not authenticated')
+        }
+
+        const response = await axios.patch(`${API_URL}/auth/me`, data, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+
+        const userData = response.data
+        const user: User = {
+          id: userData.id,
+          email: userData.email,
+          username: userData.username,
+          full_name: userData.full_name,
+          is_active: userData.is_active,
+          is_verified: userData.is_verified,
+          avatar_url: userData.avatar_url,
+          bio: userData.bio,
+          created_at: userData.created_at,
+        }
+
+        set({ user, isLoading: false })
+      } catch (error) {
+        const errorMessage = getBackendError(error)
+        set({ error: errorMessage, isLoading: false })
+        throw error
+      }
     },
   }),
   {

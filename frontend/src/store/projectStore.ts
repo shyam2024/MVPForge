@@ -40,7 +40,11 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     set({ isLoading: true })
     try {
       const res = await projectsApi.list()
-      set({ projects: res.data })
+      const data = Array.isArray(res.data) ? res.data : res.data?.data || []
+      set({ projects: data })
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+      set({ projects: [] })
     } finally {
       set({ isLoading: false })
     }

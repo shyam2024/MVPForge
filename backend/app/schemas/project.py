@@ -8,6 +8,30 @@ class Stage1ChatInput(BaseModel):
 class Stage1ProceedInput(BaseModel):
     force: bool = Field(default=False, description="Force proceed even if readiness score is below threshold")
 
+class Stage2ToggleFeature(BaseModel):
+    epic_id: str
+    feature_id: str
+    enabled: bool
+
+class Stage2ConfirmInput(BaseModel):
+    pass
+
+class Stage3StoryMove(BaseModel):
+    story_id: str
+    new_status: str
+
+class Stage3StoryEdit(BaseModel):
+    story_id: str
+    field: str
+    value: Any
+
+class Stage3RegenerateStory(BaseModel):
+    story_id: str
+    prompt: str
+
+class Stage4ModifyRequest(BaseModel):
+    prompt: str
+
 class ProjectResponse(BaseModel):
     id: str
     owner_id: str

@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 import logging
 
 from config.settings import settings
-from app.routes import auth_router, projects_router, stage_1_router, users_router
+from app.routes import auth_router, projects_router, stage_1_router, stage_2_router, stage_3_router, stage_4_router, users_router
 from app.database import connect_db, close_db
 
 # Configure logging
@@ -47,11 +47,14 @@ app.add_middleware(
 # Add Gzip compression middleware
 # app.add_middleware(GZIPMiddleware, minimum_size=1000)
 
-# Include API routes (Controllers)
+# API routes
 app.include_router(auth_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(projects_router, prefix="/api")
 app.include_router(stage_1_router, prefix="/api")
+app.include_router(stage_2_router, prefix="/api")
+app.include_router(stage_3_router, prefix="/api")
+app.include_router(stage_4_router, prefix="/api")
 
 # Health check endpoint
 @app.get("/health")

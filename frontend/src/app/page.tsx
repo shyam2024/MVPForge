@@ -114,9 +114,8 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className={`card-glass rounded-2xl p-6 hover:border-white/10 transition-all duration-300 group ${
-                  stage.num === 7 ? 'md:col-span-2 lg:col-span-1' : ''
-                }`}
+                className={`card-glass rounded-2xl p-6 hover:border-white/10 transition-all duration-300 group ${stage.num === 7 ? 'md:col-span-2 lg:col-span-1' : ''
+                  }`}
               >
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stage.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <stage.icon className="w-6 h-6 text-white" />
