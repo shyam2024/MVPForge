@@ -2,7 +2,7 @@ from langchain_groq import ChatGroq
 import os
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate
-from app.config import settings
+from config.settings import settings
 from typing import List, Dict, Any, Optional
 import json
 import re
