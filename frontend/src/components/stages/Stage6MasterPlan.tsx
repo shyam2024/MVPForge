@@ -235,7 +235,11 @@ export function Stage6MasterPlan({ project, onUpdate }: Props) {
                           <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
                             <span>⏱ {task.estimated_hours}h</span>
                             <span className="capitalize">{task.component_type}</span>
-                            {task.api_mapping?.length > 0 && <span>🔗 {task.api_mapping[0]}</span>}
+                            {task.api_mapping?.length > 0 && (
+                              <span>
+                                🔗 {task.api_mapping[0].api_name} ({task.api_mapping[0].api_path})
+                              </span>
+                            )}
                           </div>
                         </>
                       )}
