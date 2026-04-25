@@ -21,11 +21,6 @@ def clean_html(raw: str) -> str:
            .replace('\\"', '"')
            .replace("\\t", "\t")
     )
-    raw = (
-        raw.replace("\n", "")
-           .replace('\"', '"')
-           .replace("\t", "	")
-    )
     return raw.strip()
 
 async def generate_ui_screens(project: Project) -> Dict[str, Any]:
@@ -192,6 +187,30 @@ RESPONSIVENESS
 
 - Use responsive Tailwind classes (md:, lg:)
 - UI must look good on desktop at minimum
+
+
+TAILWIND USAGE RULES
+
+- Use ONLY valid Tailwind CSS utility classes
+- DO NOT invent class names like:
+  bg-surface, text-primary, bg-background, etc.
+- If using design tokens (primary, background, etc.), convert them into valid Tailwind classes
+- Prefer standard Tailwind color palette (blue, gray, slate, etc.)
+
+
+DESIGN GUIDANCE (NOT RESTRICTION)
+
+Use modern SaaS UI patterns such as:
+
+- Cards → bg-white, shadow, rounded-lg, p-4
+- Buttons → bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded
+- Inputs → border border-gray-300 rounded px-3 py-2 focus:ring
+- Navbar → flex justify-between items-center px-6 py-4 border-b
+- Sidebar → w-64 bg-white border-r p-4
+- Tables → w-full border rounded overflow-hidden
+
+These are EXAMPLES, not strict requirements.
+You may adapt styles based on the screen context.
 
 HARD CONSTRAINTS
 
