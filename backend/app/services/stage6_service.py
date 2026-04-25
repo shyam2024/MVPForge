@@ -2,6 +2,34 @@ from app.services.ai_service import structured_completion
 from app.models.project import Project
 from typing import Dict, Any, List
 import json
+import asyncio
+import uuid
+
+RATE_LIMIT_DELAY = 5
+CHUNK_SIZE = 5
+
+
+def chunk_list(data: List, size: int):
+    for i in range(0, len(data), size):
+        yield data[i:i + size]
+        
+def normalize_task_ids(tasks: List[Dict]) -> List[Dict]:
+    """
+    Replace all task IDs with globally unique IDs
+    and fix dependencies accordingly.
+    """
+
+    id_map = {}
+
+
+    for task in tasks:
+        old_id = task.get("id")
+        new_id = f"task-{uuid.uuid4().hex[:8]}"
+        id_map[old_id] = new_id
+        task["id"] = new_id
+
+    return tasks
+
 
 
 async def generate_master_plan(project: Project) -> Dict[str, Any]:
@@ -10,13 +38,32 @@ async def generate_master_plan(project: Project) -> Dict[str, Any]:
     backlog = project.stage3
     arch = project.stage4
 
-    manifest = await structured_completion(
-        """You are a Principal Software Architect and Lead Engineer.
-Create the COMPLETE Master Build Manifest — the engineering blueprint to implement the entire system.
-Return JSON:
+    user_stories = backlog.get("user_stories", [])
+
+    meta = await structured_completion(
+        """Return JSON:
 {
   "project_name": "...",
-  "tech_stack": {...},
+  "tech_stack": {}
+}
+STRICT JSON RULES:
+- Every key MUST use ":" (never "." or "=")
+- JSON must be valid and parsable by Python json.loads
+- Do not include syntax errors
+- Do not truncate output
+""",
+        f"PVD Summary:\n{json.dumps(pvd)}\nArchitecture Tech Stack:\n{json.dumps(arch.get('tech_stack', {}))}",
+        temperature=0.2,
+    )
+
+    await asyncio.sleep(RATE_LIMIT_DELAY)
+
+    directory = await structured_completion(
+        """You are a Senior Engineer.
+Generate project directory structure.
+
+Return JSON:
+{
   "directory_structure": {
     "type": "dir",
     "name": "project-root",
@@ -25,52 +72,128 @@ Return JSON:
         "type": "dir|file",
         "name": "...",
         "purpose": "...",
-        "children": [...]
+        "children": []
       }
     ]
-  },
-  "tasks": [
-    {
-      "id": "task-uuid",
-      "story_id": "...",
-      "title": "Implement ...",
-      "description": "Detailed implementation description",
-      "file_path": "src/...",
-      "component_type": "page|component|api|service|model|config|test|util",
-      "api_mapping": ["GET /api/v1/..."],
-      "db_mapping": ["Collection.field"],
-      "dependencies": ["other-task-id"],
-      "priority": "critical|high|medium|low",
-      "estimated_hours": 0.5-8
-    }
-  ],
-  "build_order": ["task-id-1", "task-id-2"],
-  "environment_variables": [
-    {"key": "VAR_NAME", "description": "...", "required": true, "example": "..."}
-  ],
-  "setup_commands": ["npm install", "pip install -r requirements.txt", ...],
-  "run_commands": {"dev": "...", "build": "...", "test": "...", "start": "..."}
+  }
 }
-Be EXHAUSTIVE. Map ALL user stories to tasks. Include setup files, config, auth, tests.""",
+STRICT JSON RULES:
+- Every key MUST use ":" (never "." or "=")
+- JSON must be valid and parsable by Python json.loads
+- Do not include syntax errors
+- Do not truncate output
+""",
         f"""
-PVD: {json.dumps(pvd, indent=2)}
-Architecture: {json.dumps({k: v for k, v in arch.items() if k != 'status'}, indent=2)}
-User Stories: {json.dumps(backlog.get('user_stories', []), indent=2)}
+Tech Stack: {json.dumps(meta.get('tech_stack', {}))}
+Features: {json.dumps([f['epic_name'] for f in manifesto])}
 """,
         temperature=0.2,
     )
 
-    manifest["status"] = "in_progress"
-    manifest["validation"] = {"is_valid": False, "errors": [], "warnings": []}
+    await asyncio.sleep(RATE_LIMIT_DELAY)
+
+    all_tasks = []
+
+    for chunk in chunk_list(user_stories, CHUNK_SIZE):
+        tasks_chunk = await structured_completion(
+            """Generate implementation tasks.
+
+Return JSON:
+{
+  "tasks": [
+    {
+      "id": "task-uuid",
+      "story_id": "...",
+      "title": "...",
+      "description": "...",
+      "file_path": "src/...",
+      "component_type": "page|component|api|service|model|config|test|util",
+      "api_mapping": [],
+      "db_mapping": [],
+      "dependencies": [],
+      "priority": "high|medium|low",
+      "estimated_hours": 1
+    }
+  ]
+}
+STRICT JSON RULES:
+- Every key MUST use ":" (never "." or "=")
+- JSON must be valid and parsable by Python json.loads
+- Do not include syntax errors
+- Do not truncate output
+""",
+            f"""
+Stories:
+{json.dumps([{"id": s["id"], "title": s["title"]} for s in chunk])}
+
+Tech Stack:
+{json.dumps(meta.get("tech_stack", {}))}
+""",
+            temperature=0.3,
+        )
+
+        all_tasks.extend(tasks_chunk.get("tasks", []))
+        await asyncio.sleep(RATE_LIMIT_DELAY)
+
+    all_tasks = normalize_task_ids(all_tasks)
+    build = await structured_completion(
+        """Generate build order.
+
+Return JSON:
+{
+  "build_order": []
+}
+STRICT JSON RULES:
+- Every key MUST use ":" (never "." or "=")
+- JSON must be valid and parsable by Python json.loads
+- Do not include syntax errors
+- Do not truncate output
+""",
+        json.dumps([{"id": t["id"], "dependencies": t.get("dependencies", [])} for t in all_tasks]),
+        temperature=0.2,
+    )
+
+    await asyncio.sleep(RATE_LIMIT_DELAY)
+
+    setup = await structured_completion(
+        """Return JSON:
+{
+  "environment_variables": [],
+  "setup_commands": [],
+  "run_commands": {}
+}
+STRICT JSON RULES:
+- Every key MUST use ":" (never "." or "=")
+- JSON must be valid and parsable by Python json.loads
+- Do not include syntax errors
+- Do not truncate output
+""",
+        json.dumps(meta.get("tech_stack", {})),
+        temperature=0.2,
+    )
+    
+
+    manifest = {
+        "project_name": meta.get("project_name", "Project"),
+        "tech_stack": meta.get("tech_stack", {}),
+        "directory_structure": directory.get("directory_structure", {}),
+        "tasks": all_tasks,
+        "build_order": build.get("build_order", []),
+        "environment_variables": setup.get("environment_variables", []),
+        "setup_commands": setup.get("setup_commands", []),
+        "run_commands": setup.get("run_commands", {}),
+        "status": "in_progress",
+        "validation": {"is_valid": False, "errors": [], "warnings": []},
+    }
+
     return manifest
-
-
+    
 def validate_manifest(stage: Dict) -> Dict:
     """Run validation checks on the master build manifest."""
     errors = []
     warnings = []
     tasks = stage.get("tasks", [])
-    arch = {}  # Would normally pull from project
+    arch = {}  
 
     # Check for duplicate file paths
     file_paths = [t.get("file_path") for t in tasks if t.get("file_path")]
