@@ -34,7 +34,7 @@ const getAxios = () => {
 
 // Projects API
 export const projectsApi = {
-  list: () => getAxios().get('/projects'),
+  list: () => getAxios().get('/projects/'),
   get: (id: string) => getAxios().get(`/projects/${id}`),
   create: (data: { name: string; description?: string }) =>
     getAxios().post('/projects', data),
@@ -46,93 +46,93 @@ export const projectsApi = {
 // Stage 1 API
 export const stage1Api = {
   chat: (projectId: string, message: string) =>
-    getAxios().post(`/projects/${projectId}/stage/1/chat`, { message }),
+    getAxios().post(`/projects/${projectId}/stage1/chat`, { message }),
   proceed: (projectId: string, force = false) =>
-    getAxios().post(`/projects/${projectId}/stage/1/proceed`, { force }),
+    getAxios().post(`/projects/${projectId}/stage1/proceed`, { force }),
 }
 
 // Stage 2 API
 export const stage2Api = {
   generate: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/2/generate`),
+    getAxios().post(`/projects/${projectId}/stage2/generate`),
   updateEpic: (projectId: string, epicId: string, data: any) =>
-    getAxios().put(`/projects/${projectId}/stage/2/epic/${epicId}`, data),
+    getAxios().put(`/projects/${projectId}/stage2/epic/${epicId}`, data),
   toggleFeature: (projectId: string, epicId: string, featureId: string, enabled: boolean) =>
-    getAxios().post(`/projects/${projectId}/stage/2/epic/${epicId}/feature/${featureId}/toggle`, {
+    getAxios().post(`/projects/${projectId}/stage2/epic/${epicId}/feature/${featureId}/toggle`, {
       enabled,
     }),
   confirm: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/2/confirm`),
+    getAxios().post(`/projects/${projectId}/stage2/confirm`),
 }
 
 // Stage 3 API
 export const stage3Api = {
   generate: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/3/generate`),
+    getAxios().post(`/projects/${projectId}/stage3/generate`),
   moveStory: (projectId: string, storyId: string, status: string) =>
-    getAxios().post(`/projects/${projectId}/stage/3/story/${storyId}/move`, {
+    getAxios().post(`/projects/${projectId}/stage3/story/${storyId}/move`, {
       status,
     }),
   editStory: (projectId: string, storyId: string, field: string, value: any) =>
-    getAxios().put(`/projects/${projectId}/stage/3/story/${storyId}`, {
+    getAxios().put(`/projects/${projectId}/stage3/story/${storyId}`, {
       [field]: value,
     }),
   regenerateStory: (projectId: string, storyId: string, prompt: string) =>
-    getAxios().post(`/projects/${projectId}/stage/3/story/${storyId}/regenerate`, {
+    getAxios().post(`/projects/${projectId}/stage3/story/${storyId}/regenerate`, {
       prompt,
     }),
   confirm: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/3/confirm`),
+    getAxios().post(`/projects/${projectId}/stage3/confirm`),
 }
 
 // Stage 4 API
 export const stage4Api = {
   generate: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/4/generate`),
+    getAxios().post(`/projects/${projectId}/stage4/generate`),
   updateArchitecture: (projectId: string, data: any) =>
-    getAxios().put(`/projects/${projectId}/stage/4`, data),
+    getAxios().put(`/projects/${projectId}/stage4`, data),
   modify: (projectId: string, prompt: string) =>
-    getAxios().post(`/projects/${projectId}/stage/4/modify`, { prompt }),
+    getAxios().post(`/projects/${projectId}/stage4/modify`, { prompt }),
   confirm: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/4/confirm`),
+    getAxios().post(`/projects/${projectId}/stage4/confirm`),
 }
 
 // Stage 5 API
 export const stage5Api = {
   generate: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/5/generate`),
+    getAxios().post(`/projects/${projectId}/stage5/generate`),
   updateScreen: (projectId: string, screenId: string, data: any) =>
-    getAxios().put(`/projects/${projectId}/stage/5/screen/${screenId}`, data),
+    getAxios().put(`/projects/${projectId}/stage5/screen/${screenId}`, data),
   editScreen: (projectId: string, screenId: string, prompt: string) =>
-    getAxios().post(`/projects/${projectId}/stage/5/screen/${screenId}/edit`, { prompt }),
+    getAxios().post(`/projects/${projectId}/stage5/screen/${screenId}/edit`, { prompt }),
   approveScreen: (projectId: string, screenId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/5/screen/${screenId}/approve`),
+    getAxios().post(`/projects/${projectId}/stage5/screen/${screenId}/approve`),
   confirm: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/5/confirm`),
+    getAxios().post(`/projects/${projectId}/stage5/confirm`),
 }
 
 // Stage 6 API
 export const stage6Api = {
   generate: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/6/generate`),
+    getAxios().post(`/projects/${projectId}/stage6/generate`),
   updatePlan: (projectId: string, data: any) =>
-    getAxios().put(`/projects/${projectId}/stage/6`, data),
+    getAxios().put(`/projects/${projectId}/stage6`, data),
   validate: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/6/validate`),
+    getAxios().post(`/projects/${projectId}/stage6/validate`),
   editTask: (projectId: string, taskId: string, data: any) =>
-    getAxios().put(`/projects/${projectId}/stage/6/task/${taskId}`, data),
+    getAxios().put(`/projects/${projectId}/stage6/task/${taskId}`, data),
   confirm: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/6/confirm`),
+    getAxios().post(`/projects/${projectId}/stage6/confirm`),
 }
 
 // Stage 7 API
 export const stage7Api = {
   generate: (projectId: string) =>
-    getAxios().post(`/projects/${projectId}/stage/7/generate`),
+    getAxios().post(`/projects/${projectId}/stage7/generate`),
   getFile: (projectId: string, index: number) =>
-    getAxios().get(`/projects/${projectId}/stage/7/file/${index}`),
+    getAxios().get(`/projects/${projectId}/stage7/file/${index}`),
   downloadAll: (projectId: string) =>
-    getAxios().get(`/projects/${projectId}/stage/7/download`, {
+    getAxios().get(`/projects/${projectId}/stage7/download`, {
       responseType: 'blob',
     }),
 }
