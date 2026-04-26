@@ -119,7 +119,7 @@ export default function DashboardPage() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: i * 0.05 }}
                   onClick={() => router.push(`/project/${project.id}`)}
-                  className="card-glass rounded-2xl p-6 cursor-pointer hover:border-white/10 transition-all duration-300 group relative"
+                  className="card-glass rounded-2xl p-6 cursor-pointer hover:border-foreground/20 transition-all duration-300 group relative"
                 >
                   <button
                     onClick={(e) => handleDelete(project.id, e)}

@@ -8,11 +8,11 @@ import { Project } from '@/store/projectStore'
 
 const stageIcons = [MessageSquare, LayoutGrid, CheckSquare, GitBranch, Monitor, FileCode, FlaskConical]
 const stageColors = [
-  'text-violet-400 bg-violet-400/10',
+  'text-forge-500 bg-forge-500/10',
   'text-blue-400 bg-blue-400/10',
   'text-cyan-400 bg-cyan-400/10',
   'text-emerald-400 bg-emerald-400/10',
-  'text-yellow-400 bg-yellow-400/10',
+  'text-forge-400 bg-forge-500/10',
   'text-orange-400 bg-orange-400/10',
   'text-red-400 bg-red-400/10',
 ]
@@ -93,7 +93,7 @@ export function StageSidebar({ project, currentStage, onStageClick }: Props) {
           </div>
           <div className="h-1.5 bg-border rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-forge-500 to-blue-500 rounded-full transition-all duration-500"
+              className="h-full bg-forge-600 rounded-full transition-all duration-500"
               style={{ width: `${(project.current_stage / 7) * 100}%` }}
             />
           </div>

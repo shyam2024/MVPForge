@@ -103,8 +103,8 @@ export function Stage6MasterPlan({ project, onUpdate }: Props) {
   if (!stage) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-          <FileCode className="w-8 h-8 text-orange-400" />
+        <div className="w-16 h-16 rounded-2xl bg-forge-500/10 border border-forge-500/20 flex items-center justify-center">
+          <FileCode className="w-8 h-8 text-forge-500" />
         </div>
         <h2 className="font-display font-bold text-2xl">Implementation Strategy</h2>
         <p className="text-muted-foreground text-center max-w-sm">
@@ -172,7 +172,7 @@ export function Stage6MasterPlan({ project, onUpdate }: Props) {
       {/* Tabs */}
       <div className="flex gap-1 border-b border-border/40 flex-shrink-0">
         {tabs.map((tab) => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={cn('flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all', activeTab === tab.id ? 'border-orange-400 text-orange-400' : 'border-transparent text-muted-foreground hover:text-foreground')}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={cn('flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all', activeTab === tab.id ? 'border-forge-500 text-forge-500' : 'border-transparent text-muted-foreground hover:text-foreground')}>
             <tab.icon className="w-4 h-4" />
             {tab.label}
             {tab.id === 'validation' && validation?.errors?.length > 0 && (
@@ -192,7 +192,7 @@ export function Stage6MasterPlan({ project, onUpdate }: Props) {
                   <div className="flex items-start gap-3">
                     <span className={cn('text-xs px-2 py-0.5 rounded-md font-medium flex-shrink-0 mt-0.5',
                       task.priority === 'critical' ? 'bg-red-400/10 text-red-400' :
-                      task.priority === 'high' ? 'bg-orange-400/10 text-orange-400' :
+                      task.priority === 'high' ? 'bg-forge-500/10 text-forge-500' :
                       task.priority === 'medium' ? 'bg-yellow-400/10 text-yellow-400' :
                       'bg-muted text-muted-foreground'
                     )}>
@@ -230,7 +230,7 @@ export function Stage6MasterPlan({ project, onUpdate }: Props) {
                       ) : (
                         <>
                           <p className="text-sm font-semibold">{task.title}</p>
-                          <p className="text-xs font-mono text-orange-400/80 mt-0.5">{task.file_path}</p>
+                          <p className="text-xs font-mono text-forge-500/80 mt-0.5">{task.file_path}</p>
                           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{task.description}</p>
                           <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
                             <span>⏱ {task.estimated_hours}h</span>

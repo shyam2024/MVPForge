@@ -2,18 +2,18 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
-  Sparkles, ArrowRight, Zap, GitBranch, Code2, Layers,
+  ArrowRight, Zap, GitBranch, Code2, Layers,
   CheckCircle, BarChart3, Bot, FlaskConical
 } from 'lucide-react'
 
 const stages = [
-  { num: 1, label: 'Discovery Gate', desc: 'AI-driven chat to clarify your vision', icon: Bot, color: 'from-violet-500 to-purple-600' },
-  { num: 2, label: 'Feature Mapping', desc: 'Extract and toggle epics & features', icon: Layers, color: 'from-blue-500 to-cyan-600' },
-  { num: 3, label: 'Backlog', desc: 'Kanban-based user story management', icon: CheckCircle, color: 'from-cyan-500 to-teal-600' },
-  { num: 4, label: 'Architecture', desc: 'AI-generated system design & ERD', icon: GitBranch, color: 'from-emerald-500 to-green-600' },
-  { num: 5, label: 'UI Prototyping', desc: 'Generate and preview HTML screens', icon: BarChart3, color: 'from-yellow-500 to-amber-600' },
-  { num: 6, label: 'Master Plan', desc: 'Full directory structure & task mapping', icon: Zap, color: 'from-orange-500 to-red-600' },
-  { num: 7, label: 'The Forge', desc: 'Generate complete, GitHub-ready code', icon: FlaskConical, color: 'from-red-500 to-rose-600' },
+  { num: 1, label: 'Discovery Gate', desc: 'AI-driven chat to clarify your vision', icon: Bot, color: 'from-forge-500 to-forge-700' },
+  { num: 2, label: 'Feature Mapping', desc: 'Extract and toggle epics & features', icon: Layers, color: 'from-zinc-500 to-zinc-700' },
+  { num: 3, label: 'Backlog', desc: 'Kanban-based user story management', icon: CheckCircle, color: 'from-neutral-500 to-neutral-700' },
+  { num: 4, label: 'Architecture', desc: 'AI-generated system design & ERD', icon: GitBranch, color: 'from-stone-500 to-stone-700' },
+  { num: 5, label: 'UI Prototyping', desc: 'Generate and preview HTML screens', icon: BarChart3, color: 'from-forge-400 to-forge-600' },
+  { num: 6, label: 'Master Plan', desc: 'Full directory structure & task mapping', icon: Zap, color: 'from-zinc-400 to-zinc-600' },
+  { num: 7, label: 'The Forge', desc: 'Generate complete, GitHub-ready code', icon: FlaskConical, color: 'from-neutral-400 to-neutral-600' },
 ]
 
 export default function HomePage() {
@@ -23,7 +23,7 @@ export default function HomePage() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-forge-500 to-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-forge-600 flex items-center justify-center">
               <Code2 className="w-4 h-4 text-white" />
             </div>
             <span className="font-display font-bold text-lg">GenAI Assistant</span>
@@ -46,8 +46,7 @@ export default function HomePage() {
       <section className="pt-32 pb-20 px-6 text-center relative">
         {/* Background glow */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-forge-600/10 blur-[120px]" />
-          <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] rounded-full bg-blue-600/10 blur-[80px]" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[560px] h-[560px] rounded-full bg-secondary/40 blur-[120px]" />
         </div>
 
         <motion.div
@@ -56,11 +55,6 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
           className="relative max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-forge-500/30 bg-forge-500/10 text-forge-400 text-sm font-medium mb-8">
-            <Sparkles className="w-3.5 h-3.5" />
-            AI-Powered Software Engineering Pipeline
-          </div>
-
           <h1 className="text-5xl md:text-7xl font-display font-extrabold leading-tight mb-6">
             Turn your idea into{' '}
             <span className="text-gradient">production code</span>
@@ -106,7 +100,7 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-8 gap-4">
             {stages.map((stage, i) => (
               <motion.div
                 key={stage.num}
@@ -114,8 +108,9 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className={`card-glass rounded-2xl p-6 hover:border-white/10 transition-all duration-300 group ${stage.num === 7 ? 'md:col-span-2 lg:col-span-1' : ''
-                  }`}
+                className={`card-glass rounded-2xl p-6 hover:border-foreground/20 transition-all duration-300 group lg:col-span-2 ${
+                  stage.num === 5 ? 'lg:col-start-2' : ''
+                }`}
               >
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stage.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <stage.icon className="w-6 h-6 text-white" />
@@ -163,7 +158,7 @@ export default function HomePage() {
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <div className="card-glass rounded-3xl p-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-forge-600/10 to-blue-600/10 pointer-events-none" />
+            <div className="absolute inset-0 bg-secondary/30 pointer-events-none" />
             <h2 className="text-4xl font-display font-bold mb-4 relative">
               Ready to build?
             </h2>

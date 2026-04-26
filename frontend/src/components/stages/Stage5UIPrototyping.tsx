@@ -84,8 +84,8 @@ export function Stage5UIPrototyping({ project, onUpdate }: Props) {
   if (!stage) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
-          <Monitor className="w-8 h-8 text-yellow-400" />
+        <div className="w-16 h-16 rounded-2xl bg-forge-500/10 border border-forge-500/20 flex items-center justify-center">
+          <Monitor className="w-8 h-8 text-forge-500" />
         </div>
         <h2 className="font-display font-bold text-2xl">UI Prototyping</h2>
         <p className="text-muted-foreground text-center max-w-sm">
@@ -117,7 +117,7 @@ export function Stage5UIPrototyping({ project, onUpdate }: Props) {
               onClick={() => setSelectedScreen(screen)}
               className={cn(
                 'w-full px-3 py-2.5 rounded-xl text-left transition-all text-sm',
-                selectedScreen?.id === screen.id ? 'bg-yellow-400/10 border border-yellow-400/30 text-yellow-400' : 'hover:bg-accent text-muted-foreground hover:text-foreground',
+                selectedScreen?.id === screen.id ? 'bg-forge-500/10 border border-forge-500/20 text-forge-500' : 'hover:bg-accent text-muted-foreground hover:text-foreground',
               )}
             >
               <div className="flex items-center gap-2">
@@ -179,8 +179,8 @@ export function Stage5UIPrototyping({ project, onUpdate }: Props) {
             {/* Edit prompt */}
             {!isCompleted && (
               <div className="flex gap-3 flex-shrink-0">
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-yellow-400/5 border border-yellow-400/20 flex-shrink-0">
-                  <Wand2 className="w-4 h-4 text-yellow-400" />
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-yellow-500/10 border border-forge-500/20 flex-shrink-0">
+                  <Wand2 className="w-4 h-4 text-forge-500" />
                 </div>
                 <input
                   value={editPrompt}

@@ -25,7 +25,7 @@ export default function SettingsPage() {
             { icon: Shield, label: 'Security', desc: 'Password, two-factor authentication, and sessions' },
             { icon: Palette, label: 'Appearance', desc: 'Theme and display preferences' },
           ].map((item) => (
-            <div key={item.label} className="card-glass rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:border-white/10 transition-all">
+            <div key={item.label} className="card-glass rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:border-foreground/20 transition-all">
               <div className="w-10 h-10 rounded-xl bg-forge-500/10 border border-forge-500/20 flex items-center justify-center flex-shrink-0">
                 <item.icon className="w-5 h-5 text-forge-400" />
               </div>

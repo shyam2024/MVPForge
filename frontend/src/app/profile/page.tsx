@@ -63,7 +63,7 @@ export default function ProfilePage() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           {/* Avatar */}
           <div className="card-glass rounded-2xl p-6 mb-6 flex items-center gap-5">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-forge-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
+            <div className="w-20 h-20 rounded-2xl bg-forge-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
               {user.avatar_url ? (
                 <img src={user.avatar_url} alt={user.full_name} className="w-full h-full object-cover rounded-2xl" />
               ) : initials}

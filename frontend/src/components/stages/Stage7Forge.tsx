@@ -15,10 +15,10 @@ interface Props {
 type Tab = 'files' | 'tests' | 'report'
 
 const languageColors: Record<string, string> = {
-  typescript: 'text-blue-400', javascript: 'text-yellow-400',
-  python: 'text-green-400', json: 'text-orange-400',
-  yaml: 'text-red-400', markdown: 'text-gray-400',
-  css: 'text-pink-400', html: 'text-orange-300', default: 'text-muted-foreground',
+  typescript: 'text-forge-500', javascript: 'text-forge-500',
+  python: 'text-forge-500', json: 'text-forge-500',
+  yaml: 'text-forge-500', markdown: 'text-muted-foreground',
+  css: 'text-forge-500', html: 'text-forge-500', default: 'text-muted-foreground',
 }
 
 export function Stage7Forge({ project, onUpdate }: Props) {

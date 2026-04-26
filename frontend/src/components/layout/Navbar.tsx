@@ -27,7 +27,7 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl h-16">
       <div className="h-full px-6 flex items-center justify-between max-w-screen-2xl mx-auto">
         <Link href="/dashboard" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-forge-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-forge-600 flex items-center justify-center flex-shrink-0">
             <Code2 className="w-4 h-4 text-white" />
           </div>
           <span className="font-display font-bold text-base hidden sm:block">GenAI Assistant</span>
@@ -43,7 +43,7 @@ export function Navbar() {
               onClick={() => setMenuOpen(!menuOpen)}
               className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-accent transition-colors"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-forge-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-secondary border border-border flex items-center justify-center text-foreground text-xs font-bold flex-shrink-0">
                 {initials}
               </div>
               <div className="hidden sm:block text-left">
@@ -54,7 +54,7 @@ export function Navbar() {
             </button>
 
             {menuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-52 rounded-xl border border-border bg-card shadow-2xl shadow-black/50 py-1 z-50 animate-fade-in">
+              <div className="absolute right-0 top-full mt-2 w-52 rounded-xl border border-border bg-card shadow-xl shadow-black/10 py-1 z-50 animate-fade-in">
                 <div className="px-3 py-2 border-b border-border mb-1">
                   <p className="text-sm font-medium">{user?.full_name}</p>
                   <p className="text-xs text-muted-foreground truncate">{user?.email}</p>

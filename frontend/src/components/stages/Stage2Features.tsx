@@ -94,7 +94,9 @@ export function Stage2Features({ project, onUpdate }: Props) {
   if (!stage) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
-        <Zap className="w-8 h-8 text-blue-400" />
+       <div className="w-16 h-16 rounded-2xl bg-forge-500/10 border border-forge-500/20 flex items-center justify-center">
+          <Zap className="w-8 h-8 text-forge-500" />
+        </div>
         <h2 className="font-bold text-2xl">Feature Mapping</h2>
         <button
           onClick={handleGenerate}
@@ -153,7 +155,7 @@ export function Stage2Features({ project, onUpdate }: Props) {
                 onClick={() =>
                   setExpandedEpicIndex(isExpanded ? null : ei)
                 }
-                className="px-5 py-4 border-b border-border/40 bg-blue-500/5 cursor-pointer"
+                className="px-5 py-4 border-b border-border/40 bg-secondary/60"
               >
                 <div className="flex items-center justify-between">
                   <h3 className="font-display font-bold text-base">
@@ -205,7 +207,7 @@ export function Stage2Features({ project, onUpdate }: Props) {
                             {isToggling ? (
                               <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
                             ) : enabled ? (
-                              <ToggleRight className="w-5 h-5 text-blue-400" />
+                              <ToggleRight className="w-5 h-5 text-forge-500" />
                             ) : (
                               <ToggleLeft className="w-5 h-5 text-muted-foreground" />
                             )}

@@ -6,38 +6,37 @@
 
 @layer base {
   :root {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    --background: 48 12% 96%;
+    --foreground: 30 5% 18%;
 
-    --card: 222 47% 7%;
-    --card-foreground: 213 31% 91%;
+    --card: 0 0% 100%;
+    --card-foreground: 30 5% 18%;
 
-    --popover: 222 47% 7%;
-    --popover-foreground: 213 31% 91%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 5% 18%;
 
-    --primary: 239 84% 67%;
+    --primary: 30 4% 17%;
     --primary-foreground: 0 0% 100%;
+    --secondary: 45 10% 92%;
+    --secondary-foreground: 30 5% 18%;
 
-    --secondary: 222 47% 11%;
-    --secondary-foreground: 213 31% 91%;
+    --muted: 45 10% 92%;
+    --muted-foreground: 35 5% 48%;
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
-
-    --accent: 216 34% 17%;
-    --accent-foreground: 213 31% 91%;
+    --accent: 45 10% 90%;
+    --accent-foreground: 30 5% 18%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 239 84% 67%;
+    --border: 42 9% 82%;
+    --input: 42 9% 82%;
+    --ring: 30 4% 17%;
 
     --radius: 0.75rem;
 
-    --forge-glow: 239, 84%, 67%;
-    --forge-amber: 38, 92%, 50%;
+    --forge-glow: 30, 4%, 17%;
+    --forge-amber: 35, 5%, 48%;
   }
 }
 
@@ -71,21 +70,20 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-forge-400 via-blue-400 to-forge-600;
+    @apply bg-none text-foreground;
   }
 
   .card-glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
   }
 
   .glow-primary {
-    box-shadow: 0 0 40px rgba(98, 113, 241, 0.15);
+    box-shadow: none;
   }
 
   .glow-amber {
-    box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
+    box-shadow: none;
   }
 
   .scrollbar-thin {
@@ -118,8 +116,8 @@
 /* Code syntax highlighting in dark theme */
 .code-block {
   @apply font-mono text-sm rounded-lg p-4 overflow-x-auto;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: hsl(var(--secondary));
+  border: 1px solid hsl(var(--border));
 }
 
 /* Custom scrollbar for code blocks */
@@ -141,7 +139,7 @@
 /* Drag and drop styles */
 .kanban-card-dragging {
   @apply rotate-2 scale-105 shadow-2xl;
-  box-shadow: 0 20px 60px rgba(98, 113, 241, 0.3);
+  box-shadow: 0 20px 50px rgba(46, 45, 42, 0.12);
 }
 
 /* Stage progress indicator */

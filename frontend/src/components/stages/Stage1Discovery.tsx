@@ -128,11 +128,11 @@ export function Stage1Discovery({ project, onUpdate }: Props) {
                   'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
                   msg.role === 'user'
                     ? 'bg-forge-500/20 border border-forge-500/30'
-                    : 'bg-blue-500/20 border border-blue-500/30'
+                    : 'bg-forge-500/20 border bordeforge-500/20'
                 )}>
                   {msg.role === 'user'
                     ? <User className="w-4 h-4 text-forge-400" />
-                    : <Bot className="w-4 h-4 text-blue-400" />
+                    : <Bot className="w-4 h-4 text-forge-500" />
                   }
                 </div>
                 <div className={cn(
@@ -148,8 +148,8 @@ export function Stage1Discovery({ project, onUpdate }: Props) {
 
             {sending && (
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-blue-400" />
+                <div className="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-forge-500" />
                 </div>
                 <div className="bg-secondary rounded-2xl rounded-tl-sm px-4 py-3">
                   <div className="flex gap-1">

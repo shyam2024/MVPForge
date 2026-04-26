@@ -47,7 +47,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-background relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-forge-600/8 blur-[100px]" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[460px] h-[460px] rounded-full bg-secondary/40 blur-[100px]" />
       </div>
 
       <motion.div
@@ -58,7 +58,7 @@ export default function LoginPage() {
       >
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-forge-500 to-blue-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-forge-600 flex items-center justify-center">
               <Code2 className="w-5 h-5 text-white" />
             </div>
             <span className="font-display font-bold text-xl">GenAI Assistant</span>

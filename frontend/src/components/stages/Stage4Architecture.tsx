@@ -68,8 +68,8 @@ export function Stage4Architecture({ project, onUpdate }: Props) {
   if (!stage) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-          <GitBranch className="w-8 h-8 text-emerald-400" />
+        <div className="w-16 h-16 rounded-2xl bg-forge-500/10 border border-forge-500/20 flex items-center justify-center">
+          <GitBranch className="w-8 h-8 text-forge-500" />
         </div>
         <h2 className="font-display font-bold text-2xl">Architecture Design</h2>
         <p className="text-muted-foreground text-center max-w-sm">
@@ -115,8 +115,8 @@ export function Stage4Architecture({ project, onUpdate }: Props) {
       {/* Prompt-only modification */}
       {!isCompleted && (
         <div className="card-glass rounded-xl p-4 flex gap-3 flex-shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center flex-shrink-0">
-            <Terminal className="w-4 h-4 text-amber-400" />
+          <div className="w-8 h-8 rounded-lg bg-forge-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
+            <Terminal className="w-4 h-4 text-forge-500" />
           </div>
           <div className="flex-1 flex gap-3">
             <input
@@ -143,7 +143,7 @@ export function Stage4Architecture({ project, onUpdate }: Props) {
             className={cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all',
               activeTab === tab.id
-                ? 'border-emerald-400 text-emerald-400'
+                ? 'border-forge-500 text-forge-400'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
             )}
           >
@@ -159,7 +159,7 @@ export function Stage4Architecture({ project, onUpdate }: Props) {
           <div className="grid grid-cols-2 gap-4">
             {Object.entries(stage.tech_stack || {}).map(([category, items]: [string, any]) => (
               <div key={category} className="card-glass rounded-xl p-4">
-                <h3 className="text-sm font-semibold capitalize mb-3 text-emerald-400">{category.replace('_', ' ')}</h3>
+                <h3 className="text-sm font-semibold capitalize mb-3 text-forge-500">{category.replace('_', ' ')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {(items as string[]).map((item: string, i: number) => (
                     <span key={i} className="text-xs px-2.5 py-1 rounded-lg bg-secondary border border-border">{item}</span>
@@ -177,7 +177,7 @@ export function Stage4Architecture({ project, onUpdate }: Props) {
                 <span className={cn(
                   'text-xs font-mono font-bold px-2.5 py-1 rounded-lg flex-shrink-0 mt-0.5',
                   ep.method === 'GET' ? 'bg-green-400/10 text-green-400' :
-                  ep.method === 'POST' ? 'bg-blue-400/10 text-blue-400' :
+                  ep.method === 'POST' ? 'bg-forge-500/10 text-forge-500' :
                   ep.method === 'PUT' || ep.method === 'PATCH' ? 'bg-yellow-400/10 text-yellow-400' :
                   'bg-red-400/10 text-red-400'
                 )}>
@@ -199,15 +199,15 @@ export function Stage4Architecture({ project, onUpdate }: Props) {
           <div className="space-y-4">
             {(stage.database_schema?.entities || []).map((entity: any, i: number) => (
               <div key={i} className="card-glass rounded-xl overflow-hidden">
-                <div className="px-5 py-3 bg-emerald-500/5 border-b border-border/40">
-                  <h3 className="font-semibold text-emerald-400">{entity.name}</h3>
+                <div className="px-5 py-3 bg-secondary/60 border-b border-border/40">
+                  <h3 className="font-semibold text-forge-500">{entity.name}</h3>
                   <p className="text-xs text-muted-foreground">{entity.collection}</p>
                 </div>
                 <div className="divide-y divide-border/30">
                   {entity.fields?.map((field: any, j: number) => (
                     <div key={j} className="px-5 py-2.5 flex items-center gap-4">
                       <span className="text-sm font-mono w-40 flex-shrink-0">{field.name}</span>
-                      <span className="text-xs text-blue-400 font-mono flex-shrink-0">{field.type}</span>
+                      <span className="text-xs text-forge-500 font-mono flex-shrink-0">{field.type}</span>
                       <div className="flex gap-1.5">
                         {field.constraints?.map((c: string, k: number) => (
                           <span key={k} className="text-xs bg-muted px-1.5 py-0.5 rounded text-muted-foreground">{c}</span>
@@ -226,13 +226,13 @@ export function Stage4Architecture({ project, onUpdate }: Props) {
             {stage.erd_mermaid && (
               <div className="card-glass rounded-xl p-4">
                 <h3 className="text-sm font-semibold mb-3">Entity Relationship Diagram (Mermaid)</h3>
-                <pre className="code-block text-xs text-green-400 overflow-x-auto">{stage.erd_mermaid}</pre>
+                <pre className="code-block text-xs text-foreground overflow-x-auto">{stage.erd_mermaid}</pre>
               </div>
             )}
             {stage.system_diagram && (
               <div className="card-glass rounded-xl p-4">
                 <h3 className="text-sm font-semibold mb-3">System Architecture Diagram</h3>
-                <pre className="code-block text-xs text-blue-400 overflow-x-auto">{stage.system_diagram}</pre>
+                <pre className="code-block text-xs text-foreground overflow-x-auto">{stage.system_diagram}</pre>
               </div>
             )}
           </div>

@@ -232,8 +232,8 @@ export function Stage3Backlog({ project, onUpdate }: Props) {
   if (!stage) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-          <CheckSquare className="w-8 h-8 text-cyan-400" />
+        <div className="w-16 h-16 rounded-2xl bg-forge-500/10 border border-forge-500/20 flex items-center justify-center">
+          <CheckSquare className="w-8 h-8 text-forge-500" />
         </div>
         <h2 className="font-display font-bold text-2xl">Backlog Generation</h2>
         <p className="text-muted-foreground text-center max-w-sm">
