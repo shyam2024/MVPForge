@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 import logging
 
 from config.settings import settings
-from app.routes import auth_router, projects_router, stage_1_router, stage_2_router, stage_3_router, stage_4_router, users_router
+from app.routes import auth_router, projects_router, stage_1_router, stage_2_router, stage_3_router, stage_4_router, stage_5_router, stage_6_router, stage_7_router, users_router
 from app.database import connect_db, close_db
 
 # Configure logging
@@ -55,7 +55,9 @@ app.include_router(stage_1_router, prefix="/api")
 app.include_router(stage_2_router, prefix="/api")
 app.include_router(stage_3_router, prefix="/api")
 app.include_router(stage_4_router, prefix="/api")
-
+app.include_router(stage_5_router, prefix="/api")
+app.include_router(stage_6_router, prefix="/api")
+app.include_router(stage_7_router, prefix="/api")
 # Health check endpoint
 @app.get("/health")
 async def health_check():

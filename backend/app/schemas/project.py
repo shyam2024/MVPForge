@@ -32,6 +32,29 @@ class Stage3RegenerateStory(BaseModel):
 class Stage4ModifyRequest(BaseModel):
     prompt: str
 
+class Stage5EditRequest(BaseModel):
+    screen_id: str
+    prompt: str
+
+class Stage5ApproveScreen(BaseModel):
+    screen_id: str
+
+class Stage6EditTask(BaseModel):
+    task_id: str
+    updates: Dict[str, Any]
+
+class Stage6EditManifest(BaseModel):
+    updates: Dict[str, Any]
+
+class Stage7GenerateRequest(BaseModel):
+    confirm: bool = Field(default=False, description="Must be true to confirm generation")
+    
+class Stage7TestCase(BaseModel):
+    test_id: str
+    description: str
+    input: Dict[str, Any]
+    expected_output: Dict[str, Any]
+
 class ProjectResponse(BaseModel):
     id: str
     owner_id: str

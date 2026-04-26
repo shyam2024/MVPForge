@@ -14,23 +14,71 @@ def chunk_list(data: List, size: int):
         yield data[i:i + size]
         
 def normalize_task_ids(tasks: List[Dict]) -> List[Dict]:
-    """
-    Replace all task IDs with globally unique IDs
-    and fix dependencies accordingly.
-    """
-
     id_map = {}
-
+    
+    for task in tasks:
+        old_id = task.get("id") or str(uuid.uuid4())
+        if old_id not in id_map:
+            id_map[old_id] = f"task-{uuid.uuid4().hex[:8]}"
 
     for task in tasks:
         old_id = task.get("id")
-        new_id = f"task-{uuid.uuid4().hex[:8]}"
-        id_map[old_id] = new_id
-        task["id"] = new_id
-
+        task["id"] = id_map.get(old_id, old_id)
+        deps = task.get("dependencies", [])
+        if isinstance(deps, list):
+            task["dependencies"] = [id_map.get(d, d) for d in deps if d is not None]
     return tasks
 
 
+def validate_manifest(stage: Dict) -> Dict:
+    """Run validation checks on the master build manifest (robust to dict entries)."""
+    errors = []
+    warnings = []
+    tasks = stage.get("tasks", []) or []
+
+    file_paths = [t.get("file_path") for t in tasks if t.get("file_path")]
+    from collections import Counter
+    dupes = [p for p, c in Counter(file_paths).items() if c > 1]
+    if dupes:
+        warnings.append(f"Duplicate file paths detected: {dupes}")
+
+    # Build set of defined task ids
+    task_ids = {t.get("id") for t in tasks if t.get("id")}
+
+    for task in tasks:
+        deps = task.get("dependencies", []) or []
+        if not isinstance(deps, list):
+            warnings.append(f"Task {task.get('id')} has non-list dependencies; ignoring")
+            continue
+
+        internal_deps = [d for d in deps if isinstance(d, str) and d.startswith("task-")]
+        external_deps = [d for d in deps if isinstance(d, str) and not d.startswith("task-")]
+
+        for dep in internal_deps:
+            if dep not in task_ids:
+                errors.append(f"Task {task.get('id')} has unknown dependency: {dep}")
+
+        if external_deps:
+            warnings.append(f"Task {task.get('id')} has external dependencies: {external_deps}")
+
+    build_order = stage.get("build_order", []) or []
+    ordered_ids = set()
+    for item in build_order:
+        if isinstance(item, str):
+            ordered_ids.add(item)
+        elif isinstance(item, dict):
+            # try common id keys
+            id_ = item.get("id") or item.get("task_id") or item.get("task")
+            if id_:
+                ordered_ids.add(id_)
+    for task in tasks:
+        tid = task.get("id")
+        if tid and tid not in ordered_ids:
+            warnings.append(f"Task {tid} ({task.get('title')}) not in build_order")
+
+    is_valid = len(errors) == 0
+    stage["validation"] = {"is_valid": is_valid, "errors": errors, "warnings": warnings}
+    return stage
 
 async def generate_master_plan(project: Project) -> Dict[str, Any]:
     pvd = project.stage1["product_vision_document"]
@@ -173,12 +221,23 @@ STRICT JSON RULES:
     )
     
 
+    # Normalize build_order returned from the AI so it's a list of id strings
+    raw_build_order = build.get("build_order", []) or []
+    normalized_build_order: List[str] = []
+    for item in raw_build_order:
+        if isinstance(item, str):
+            normalized_build_order.append(item)
+        elif isinstance(item, dict):
+            id_ = item.get("id") or item.get("task_id") or item.get("task")
+            if id_:
+                normalized_build_order.append(id_)
+
     manifest = {
         "project_name": meta.get("project_name", "Project"),
         "tech_stack": meta.get("tech_stack", {}),
         "directory_structure": directory.get("directory_structure", {}),
         "tasks": all_tasks,
-        "build_order": build.get("build_order", []),
+        "build_order": normalized_build_order,
         "environment_variables": setup.get("environment_variables", []),
         "setup_commands": setup.get("setup_commands", []),
         "run_commands": setup.get("run_commands", {}),
@@ -188,41 +247,8 @@ STRICT JSON RULES:
 
     return manifest
     
-def validate_manifest(stage: Dict) -> Dict:
-    """Run validation checks on the master build manifest."""
-    errors = []
-    warnings = []
-    tasks = stage.get("tasks", [])
-    arch = {}  
-
-    # Check for duplicate file paths
-    file_paths = [t.get("file_path") for t in tasks if t.get("file_path")]
-    from collections import Counter
-    dupes = [p for p, c in Counter(file_paths).items() if c > 1]
-    if dupes:
-        warnings.append(f"Duplicate file paths detected: {dupes}")
-
-    # Check for missing dependencies
-    task_ids = {t["id"] for t in tasks}
-    for task in tasks:
-        for dep in task.get("dependencies", []):
-            if dep not in task_ids:
-                errors.append(f"Task {task['id']} has unknown dependency: {dep}")
-
-    # Check build order completeness
-    build_order = stage.get("build_order", [])
-    ordered_ids = set(build_order)
-    for task in tasks:
-        if task["id"] not in ordered_ids:
-            warnings.append(f"Task {task['id']} ({task['title']}) not in build_order")
-
-    is_valid = len(errors) == 0
-    stage["validation"] = {
-        "is_valid": is_valid,
-        "errors": errors,
-        "warnings": warnings,
-    }
-    return stage
+# Note: duplicate/legacy validator removed. The robust `validate_manifest` defined
+# earlier in this file is kept and used by edit/confirm flows.
 
 
 def edit_task(stage: Dict, task_id: str, updates: Dict) -> Dict:
