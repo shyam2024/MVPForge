@@ -23,6 +23,8 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://localhost:8000",
+        "https://mvpforge-backend.onrender.com",
+        "https://mvpforge2-1rx0oax2y-meet734s-projects.vercel.app"
     ]
 
     # Database
