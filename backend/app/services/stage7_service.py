@@ -63,6 +63,7 @@ async def generate_tests(project: Project, generated_files: List[Dict]) -> List[
             continue
 
         for i, criterion in enumerate(failure_criteria):
+            await asyncio.sleep(3)
             test_case = await structured_completion(
                 """Generate a test case from a failure criterion.
 Return JSON: {
@@ -113,6 +114,7 @@ async def run_generation(project: Project) -> Dict[str, Any]:
         try:
             file_obj = await generate_file(task, project_context)
             generated_files.append(file_obj)
+            await asyncio.sleep(3)
         except Exception as e:
             generated_files.append({
                 "path": task.get("file_path", "unknown"),
